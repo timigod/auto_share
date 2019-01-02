@@ -6,14 +6,16 @@ defmodule AutoShare.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
       AutoShare.Repo,
       # Start the endpoint when the application starts
-      AutoShareWeb.Endpoint
+      AutoShareWeb.Endpoint,
       # Starts a worker by calling: AutoShare.Worker.start_link(arg)
       # {AutoShare.Worker, arg},
+      worker(AutoShare.Scheduler, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
